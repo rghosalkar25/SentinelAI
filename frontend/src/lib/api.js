@@ -1,4 +1,4 @@
-const API_BASE = "http://127.0.0.1:8001";
+const API_BASE = "https://sentinelai-cg2m.onrender.com";
 
 /**
  * Sends a message to the SentinelAI backend for analysis.
