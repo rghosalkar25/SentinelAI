@@ -1,13 +1,15 @@
+// Render Backend URL
 const API_BASE = "https://sentinelai-cg2m.onrender.com";
 
 /**
  * Sends a message to the SentinelAI backend for analysis.
- * Throws on network failure or non-2xx response.
  */
 export async function scanMessage(text) {
   const res = await fetch(`${API_BASE}/scan`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({ text }),
   });
 
@@ -16,19 +18,31 @@ export async function scanMessage(text) {
     throw new Error(body.detail || "Scan failed. Please try again.");
   }
 
-  return res.json();
+  return await res.json();
 }
 
-/** Fetches recent scan history from the database. */
+/**
+ * Fetch scan history.
+ */
 export async function getHistory(limit = 50) {
   const res = await fetch(`${API_BASE}/history?limit=${limit}`);
-  if (!res.ok) throw new Error("Could not load scan history.");
-  return res.json();
+
+  if (!res.ok) {
+    throw new Error("Could not load scan history.");
+  }
+
+  return await res.json();
 }
 
-/** Fetches aggregate stats (total scans, spam detected, etc). */
+/**
+ * Fetch dashboard statistics.
+ */
 export async function getStats() {
   const res = await fetch(`${API_BASE}/stats`);
-  if (!res.ok) throw new Error("Could not load stats.");
-  return res.json();
+
+  if (!res.ok) {
+    throw new Error("Could not load stats.");
+  }
+
+  return await res.json();
 }
