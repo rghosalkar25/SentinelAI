@@ -1,5 +1,5 @@
 // Render Backend URL
-const API_BASE = "https://sentinelai-cg2m.onrender.com";
+const API_BASE = "https://sentinelai-gc2m.onrender.com";
 
 /**
  * Sends a message to the SentinelAI backend for analysis.
