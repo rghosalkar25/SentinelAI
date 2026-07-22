@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+@theme {
+  /* Base surfaces */
+  --color-void: #05060d;
+  --color-surface: #0a0c18;
+  --color-surface-2: #10122200;
+
+  /* Brand gradient - blue to purple, per brief */
+  --color-brand-blue: #4f7cff;
+  --color-brand-indigo: #6d5bff;
+  --color-brand-purple: #a855f7;
+
+  /* Threat semantics */
+  --color-safe: #22d3a8;
+  --color-spam: #f5b93f;
+  --color-scam: #ff8a4c;
+  --color-phishing: #ff5c7a;
+  --color-critical: #ff3355;
+
+  /* Type */
+  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-void);
+  color: #e7e9f5;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(109, 91, 255, 0.35);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+}
+
+/* Glass card primitive */
+.glass {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, var(--color-brand-blue), var(--color-brand-indigo), var(--color-brand-purple));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Radar sweep - signature motif for the hero background */
+@keyframes radar-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.radar-sweep {
+  animation: radar-spin 8s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.pulse-ring {
+  animation: pulse-ring 3s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+}
+
+/* Scan-line effect used on the results card while "analyzing" */
+@keyframes scan-line {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+.scan-line {
+  animation: scan-line 1.6s ease-in-out infinite;
+}
+
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+.float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-up {
+  animation: fade-up 0.6s ease forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .radar-sweep,
+  .pulse-ring,
+  .scan-line,
+  .float-slow,
+  .animate-fade-up {
+    animation: none !important;
+  }
+}
