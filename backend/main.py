@@ -1,9 +1,12 @@
 """
 SentinelAI backend - FastAPI entrypoint.
 
-Wires up HTTP concerns (CORS, routing, validation, persistence). Detection
-logic lives in detection.py, persistence lives in database.py - both can be
-swapped independently without touching this file's route contracts.
+Handles:
+- CORS
+- Routing
+- Validation
+- Database
+- Detection
 """
 
 from typing import List
@@ -21,6 +24,9 @@ app = FastAPI(
     version="1.1.0",
 )
 
+# -----------------------------
+# CORS Configuration
+# -----------------------------
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -32,33 +38,52 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# -----------------------------
+# Startup
+# -----------------------------
 @app.on_event("startup")
 def on_startup():
     database.init_db()
 
 
+# -----------------------------
+# Root
+# -----------------------------
 @app.get("/")
 def root():
     return {"message": "SentinelAI API is running"}
 
 
+# -----------------------------
+# Health Check
+# -----------------------------
 @app.get("/health")
 def health():
     return {"status": "ok"}
 
 
+# -----------------------------
+# Scan Endpoint
+# -----------------------------
 @app.post("/scan", response_model=ScanResponse)
-def scan_message(payload: ScanRequest) -> ScanResponse:
+def scan_message(payload: ScanRequest):
     result = run_scan(payload.text)
     database.save_scan(payload.text, result)
     return ScanResponse(**result)
 
 
+# -----------------------------
+# History Endpoint
+# -----------------------------
 @app.get("/history", response_model=List[HistoryItem])
 def scan_history(limit: int = 50):
     return database.get_history(limit=limit)
 
 
+# -----------------------------
+# Statistics Endpoint
+# -----------------------------
 @app.get("/stats", response_model=StatsResponse)
 def scan_stats():
     return database.get_stats()
